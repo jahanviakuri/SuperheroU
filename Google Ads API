@@ -1,0 +1,32 @@
+from google.ads.googleads.client import GoogleAdsClient
+from google.ads.googleads.errors import GoogleAdsException
+
+# Load your configuration file
+client = GoogleAdsClient.load_from_storage("google-ads.yaml")
+
+# Define the customer ID and query
+customer_id = "1234567890"
+query = """
+    SELECT
+      campaign.id,
+      campaign.name,
+      metrics.impressions,
+      metrics.clicks,
+      metrics.ctr,
+      metrics.cost_micros
+    FROM campaign
+    WHERE segments.date DURING LAST_7_DAYS
+"""
+
+# Make the request
+try:
+    ga_service = client.get_service("GoogleAdsService")
+    response = ga_service.search(customer_id=customer_id, query=query)
+
+    for row in response:
+        print(f"Campaign: {row.campaign.name}, Impressions: {row.metrics.impressions}, "
+              f"Clicks: {row.metrics.clicks}, CTR: {row.metrics.ctr}, "
+              f"Cost: {row.metrics.cost_micros / 1_000_000:.2f} USD")
+
+except GoogleAdsException as ex:
+    print(f"Request failed: {ex}")
