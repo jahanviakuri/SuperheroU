@@ -39,3 +39,5 @@ combined_df['spend'] = combined_df['spend'].astype(float)
 
 
 print("Suspicious CTR outliers:\n", outliers)
+
+combined_df.to_csv("cleaned_verified_superhero_campaign.csv", index=False)
