@@ -1,0 +1,29 @@
+from facebook_business.api import FacebookAdsApi
+from facebook_business.adobjects.adaccount import AdAccount
+from facebook_business.adobjects.adsinsights import AdsInsights
+
+# Your credentials
+my_app_id = 'your-app-id'
+my_app_secret = 'your-app-secret'
+my_access_token = 'your-access-token'
+ad_account_id = 'act_<your-ad-account-id>'
+
+# Initialize API
+FacebookAdsApi.init(my_app_id, my_app_secret, my_access_token)
+
+# Fields to fetch
+fields = [
+    'campaign_name', 'impressions', 'clicks', 'spend', 'ctr'
+]
+
+# Call API
+account = AdAccount(ad_account_id)
+ads = account.get_insights(fields=fields, params={
+    'date_preset': 'last_7d',
+    'level': 'campaign'
+})
+
+# Print results
+for ad in ads:
+    print(f"Campaign: {ad['campaign_name']}, Impressions: {ad['impressions']}, "
+          f"Clicks: {ad['clicks']}, CTR: {ad['ctr']}, Spend: ${ad['spend']}")
