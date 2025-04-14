@@ -1,0 +1,21 @@
+##SQL 
+
+SELECT 
+    LOWER(TRIM(Campaign)) AS campaign_name,
+    Clicks AS total_clicks,
+    Impressions AS total_impressions,
+    Cost AS spend,
+    CAST(Date AS DATE) AS report_date,
+    'Google' AS platform
+FROM google_ads_raw
+
+UNION ALL
+
+SELECT 
+    LOWER(TRIM(campaign_name)) AS campaign_name,
+    total_clicks,
+    total_impressions,
+    spend,
+    CAST(report_date AS DATE),
+    'Facebook' AS platform
+FROM facebook_ads_raw;
