@@ -1,0 +1,41 @@
+# Check for missing values
+google_df = pd.read_csv("rawdata/google_ads.csv")
+fb_df = pd.read_csv("rawdata/facebook_ads.csv")
+
+combined_df = pd.concat([google_df, fb_df], ignore_index=True)
+
+
+missing_summary = combined_df.isnull().sum()
+print("Missing values:\n", missing_summary)
+
+# Fill missing clicks with 0
+combined_df['total_clicks'] = combined_df['total_clicks'].fillna(0)
+
+# Drop rows missing campaign names or impressions
+combined_df = combined_df.dropna(subset=['campaign_name', 'total_impressions'])
+
+
+# Find duplicates
+duplicates = combined_df.duplicated()
+print("Total Duplicates:", duplicates.sum())
+
+# Drop duplicates
+combined_df = combined_df.drop_duplicates()
+
+
+# Calculate CTR
+combined_df['ctr'] = combined_df['total_clicks'] / combined_df['total_impressions']
+
+# Flag suspiciously high CTRs
+outliers = combined_df[combined_df['ctr'] > 0.5]
+
+
+# Check column types
+print(combined_df.dtypes)
+
+# Convert types
+combined_df['report_date'] = pd.to_datetime(combined_df['report_date'])
+combined_df['spend'] = combined_df['spend'].astype(float)
+
+
+print("Suspicious CTR outliers:\n", outliers)
