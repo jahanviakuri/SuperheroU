@@ -1,0 +1,13 @@
+##Rawdata layer
+
+connect_str = "your-azure-storage-connection-string"
+container_name = "raw-ad-data"
+file_path = "rawdata/superhero_u_googleapidata.csv"
+file_path = "rawdata/superhero_u_fbapidata.csv"
+
+##Clean data layer 
+
+connect_str = "your-azure-storage-connection-string"
+container_name = "clean-ad-data"
+file_path = "cleandata/superhero_u_googleapidata.csv"
+file_path = "cleandata/superhero_u_fbapidata.csv"
